@@ -1,26 +1,27 @@
 #include <iostream>
-#include <random>
 
 using namespace std;
 
-// function utilizing c++11 to pull a randomized number between the ranges of 0 and 100.
+// function utilizing c++11 to pull a randomized number between the ranges of 1 and 100.
 bool chanceGenerator(int chance)
 {
-	std::random_device randNum; // random_device basically conjures a pseudo-random number used as seed for better mt algorithm
-	std::mt19937 rng(randNum()); // based on Mersenne Twister algorithm. creates a decently random number. very good algorithm. 
-	std::uniform_int_distribution<std::mt19937::result_type> distBegEnd(0, 100); // should i start at 0 or 1? i think 0. who cares, this is just to show myself how to do this in the future anyway. currently researching how exactly this works. random number generation is very new to me.
-	int result = distBegEnd(rng); // again, this is confusing to me right now. but ill learn about it.
+	std::srand(std::time(nullptr)); // seeding the random number generator with the seed of time
+
+	/* generates random number from rngand finds the remainder of the random number divided by 100, then adds 1 to said final number.
+	for example, if std::rand() returned 82363, the modulus would be 63, we would then add one to the final answer, because we're
+	finding from the numbers 1-100 (std::rand() is zero-based) */
+	int randNum = std::rand() % 100 + 1;
 
 	bool trigger = false;
 
 	// if the result of that complicated algorithm is less than the "chance" argument, return true. otherwise, return false
-	if (result < chance)
+	if (randNum < chance)
 		trigger = true;
 	else
 		trigger = false;
 
 	// just to test it out
-	cout << result << endl;
+	cout << randNum << endl;
 
 	return trigger;
 }
