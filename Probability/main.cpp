@@ -1,33 +1,21 @@
 #include <iostream>
+#include <random>
+#include <ctime>
 
-using namespace std;
-
-// function utilizing c++11 to pull a randomized number between the ranges of 1 and 100.
-bool chanceGenerator(int chance)
+// function utilizing mt19937 to pull a randomized number between the ranges of 1 and 100.
+bool ChanceGenerator(int chance)
 {
-	std::srand(std::time(nullptr)); // seeding the random number generator with the seed of time
+	std::random_device randomDevice;
+	std::mt19937 rng(randomDevice()); // instantiating class mt19937 with the seed from random_device.
+	std::uniform_int_distribution<int> dist(1, 100); // then we need an evenly distribution of numbers in a range, so we have an even chance to get each.
+	int randomNum = dist(rng); // we utilize the evenly distribution of numbers, and grab one randomly utilizing the rng algorithm within mt19937 class.
 
-	/* generates random number from rngand finds the remainder of the random number divided by 100, then adds 1 to said final number.
-	for example, if std::rand() returned 82363, the modulus would be 63, we would then add one to the final answer, because we're
-	finding from the numbers 1-100 (std::rand() is zero-based) */
-	int randNum = std::rand() % 100 + 1;
-
-	bool trigger = false;
-
-	// if the result of that complicated algorithm is less than the "chance" argument, return true. otherwise, return false
-	if (randNum < chance)
-		trigger = true;
-	else
-		trigger = false;
-
-	// just to test it out
-	cout << randNum << endl;
-
-	return trigger;
+	return randomNum <= chance; // simply return if the random number we generated is within the "percentage chance" range
 }
 
 int main()
 {
-	// prints the trigger bool within chanceGenerator() function.
-	cout << chanceGenerator(60);
+	// prints the chanceGenerator() function's result.
+	std::cout << std::boolalpha; // i just like true/false instead of 1/0
+	std::cout << "The result is: " << ChanceGenerator(50) << std::endl;
 }
